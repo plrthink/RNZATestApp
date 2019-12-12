@@ -57,7 +57,7 @@ const App: () => React$Node = () => {
     console.log(zipFilePath, unzippedDir);
 
     try {
-      await Promise.all(unlink(zipFilePath), unlink(unzippedDir));
+      await Promise.all([unlink(zipFilePath), unlink(unzippedDir)]);
     } catch (error) {}
     showProgress();
     const downloadPromise = downloadFile({
@@ -74,14 +74,14 @@ const App: () => React$Node = () => {
       hideProgress();
       return;
     }
-    subscribeToZipArchive(function({progress, filePath}) {
+    subscribeToZipArchive(function({progress: unzipProgress, filePath}) {
       if (filePath.includes(unzippedDir)) {
         console.log(`unzipping to ${filePath}`);
-        setProgress(progress);
+        setProgress(unzipProgress);
       }
     });
     const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
-    let unzipResult;
+    let unzipResult = '';
     try {
       if (isPasswordProtectedZip) {
         // TODO: prompt password dialog to user
