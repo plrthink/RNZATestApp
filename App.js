@@ -46,15 +46,17 @@ const App: () => React$Node = () => {
     return filenameAsList.join('.');
   }
 
-  async function start() {
+  async function startArchiveTest() {
+    // TODO:
+  }
+
+  async function startUnzipTest() {
     const remoteZipFileUrl =
       'https://rnza-test-app-assets.firebaseapp.com/static_password.zip';
     const zipFilePath = `${DocumentDirectoryPath}/static_password.zip`;
     const unzippedDir = `${DocumentDirectoryPath}/${getFilename(
       remoteZipFileUrl,
     )}`;
-
-    console.log(zipFilePath, unzippedDir);
 
     try {
       await Promise.all([unlink(zipFilePath), unlink(unzippedDir)]);
@@ -128,16 +130,31 @@ const App: () => React$Node = () => {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView style={styles.full}>
           <View style={[styles.full, styles.center]}>
-            <TouchableHighlight>
-              <FAB onPress={start} icon="play" />
-            </TouchableHighlight>
+            <View style={styles.buttons}>
+              <TouchableHighlight>
+                <FAB
+                  onPress={startUnzipTest}
+                  icon="folder-open"
+                  label="Unzip"
+                />
+              </TouchableHighlight>
+              <TouchableHighlight>
+                <FAB
+                  onPress={startArchiveTest}
+                  icon="zip-box"
+                  label="Archive"
+                  color={Colors.white}
+                  style={{backgroundColor: Colors.deepPurpleA400}}
+                />
+              </TouchableHighlight>
+            </View>
           </View>
           <Portal>
             <Modal
               visible={isShowingProgress}
               onDismiss={hideProgress}
               contentContainerStyle={styles.modal}>
-              <ProgressBar progress={progress} color={Colors.blue900} />
+              <ProgressBar progress={progress} color={Colors.purple900} />
             </Modal>
           </Portal>
           <Portal>
@@ -176,6 +193,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     height: 400,
     paddingHorizontal: 40,
+  },
+  buttons: {
+    height: 200,
+    justifyContent: 'space-around',
   },
 });
 

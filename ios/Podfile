@@ -35,6 +35,8 @@ target 'RNZATestApp' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'RNZATestAppTests' do
     inherit! :search_paths
     # Pods for testing
