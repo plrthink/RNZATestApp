@@ -223,11 +223,11 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - RNZipArchive (5.0.0):
+  - RNZipArchive (5.0.1):
     - React
-    - RNZipArchive/Core (= 5.0.0)
+    - RNZipArchive/Core (= 5.0.1)
     - SSZipArchive (= 2.2.2)
-  - RNZipArchive/Core (5.0.0):
+  - RNZipArchive/Core (5.0.1):
     - React
     - SSZipArchive (= 2.2.2)
   - SSZipArchive (2.2.2)
@@ -361,10 +361,10 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNFS: 0d4191b1052bef9ce70deff00a5b4169c62bbd9b
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  RNZipArchive: be636657a6630e9771d4a3223dc8fd0bd0137b55
+  RNZipArchive: 87111bb6130a38edd68c8d2059d46ac94d53ffe4
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 1f204f2e7a46bfd83d8033880f30e360e13d7a8b
+PODFILE CHECKSUM: abab7fa2fee5698b2df03508bc2c51d365fa281f
 
 COCOAPODS: 1.8.4

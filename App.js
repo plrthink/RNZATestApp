@@ -15,8 +15,15 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
-import {downloadFile, unlink, DocumentDirectoryPath} from 'react-native-fs';
 import {
+  downloadFile,
+  unlink,
+  DocumentDirectoryPath,
+  writeFile,
+  mkdir,
+} from 'react-native-fs';
+import {
+  zipWithPassword,
   unzip,
   unzipWithPassword,
   isPasswordProtected,
@@ -46,66 +53,109 @@ const App: () => React$Node = () => {
     return filenameAsList.join('.');
   }
 
-  async function startArchiveTest() {
-    // TODO:
-  }
+  const remoteZipFileUrl =
+    'https://rnza-test-app-assets.firebaseapp.com/static_password.zip';
 
-  async function startUnzipTest() {
-    const remoteZipFileUrl =
-      'https://rnza-test-app-assets.firebaseapp.com/static_password.zip';
-    const zipFilePath = `${DocumentDirectoryPath}/static_password.zip`;
-    const unzippedDir = `${DocumentDirectoryPath}/${getFilename(
-      remoteZipFileUrl,
-    )}`;
+  async function downloadArchive() {
+    const zipFilePath = `${DocumentDirectoryPath}/${remoteZipFileUrl
+      .split('/')
+      .pop()}`;
 
     try {
-      await Promise.all([unlink(zipFilePath), unlink(unzippedDir)]);
+      await unlink(zipFilePath);
     } catch (error) {}
+    setProgressAndPrint(0);
     showProgress();
     const downloadPromise = downloadFile({
       fromUrl: remoteZipFileUrl,
       toFile: zipFilePath,
       progress: function({contentLength, jobId, bytesWritten}) {
         if (jobId === downloadPromise.jobId) {
-          setProgress(bytesWritten / contentLength);
+          setProgressAndPrint(bytesWritten / contentLength);
         }
       },
     });
     const downloadResult = await downloadPromise.promise;
     if (downloadResult.statusCode !== 200) {
       hideProgress();
-      return;
+      throw new Error(downloadResult.statusCode);
     }
-    subscribeToZipArchive(function({progress: unzipProgress, filePath}) {
-      if (filePath.includes(unzippedDir)) {
-        console.log(`unzipping to ${filePath}`);
-        setProgress(unzipProgress);
-      }
-    });
-    const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
-    let unzipResult = '';
+    return zipFilePath;
+  }
+
+  async function startArchiveTest() {
+    const folder = `${DocumentDirectoryPath}/test`;
     try {
+      await unlink(folder);
+    } catch (error) {}
+    try {
+      await mkdir(folder);
+      await writeFile(`${folder}/test1.txt`, 'this is a test1', 'utf8');
+      await writeFile(`${folder}/test2.txt`, 'this is a test2', 'utf8');
+      setProgressAndPrint(0);
+      showProgress();
+      const subscription = subscribeToZipArchive(function({
+        progress: zipProgress,
+        filePath,
+      }) {
+        console.log(`zipping to ${filePath}`);
+        setProgressAndPrint(zipProgress);
+      });
+      await zipWithPassword(
+        folder,
+        `${DocumentDirectoryPath}/test.zip`,
+        'password',
+      );
+      subscription.remove();
+      setProgressAndPrint(1);
+      hideProgress();
+      unlink(folder);
+      console.log(`zipped ${folder}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function startUnzipTest() {
+    setProgressAndPrint(0);
+    const unzippedDir = `${DocumentDirectoryPath}/${getFilename(
+      remoteZipFileUrl,
+    )}`;
+
+    try {
+      const zipFilePath = await downloadArchive();
+      unlink(unzippedDir);
+
+      const subscription = subscribeToZipArchive(function({
+        progress: unzipProgress,
+        filePath,
+      }) {
+        console.log(`unzipping to ${filePath}`);
+        setProgressAndPrint(unzipProgress);
+      });
+      const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
       if (isPasswordProtectedZip) {
         // TODO: prompt password dialog to user
         const password = 'helloworld';
-        unzipResult = await unzipWithPassword(
-          zipFilePath,
-          DocumentDirectoryPath,
-          password,
-        );
+        await unzipWithPassword(zipFilePath, DocumentDirectoryPath, password);
       } else {
-        unzipResult = await unzip(zipFilePath, DocumentDirectoryPath);
+        await unzip(zipFilePath, DocumentDirectoryPath);
       }
+      subscription.remove();
+      showWebview();
+      setWebviewUrl(`file://${unzippedDir}/index.html`);
+      unlink(zipFilePath);
     } catch (error) {
-      console.log(`unzip error: ${error.userInfo.NSLocalizedDescription}`);
+      console.error(error);
     }
 
+    setProgressAndPrint(1);
     hideProgress();
-    showWebview();
-    setWebviewUrl(`file://${unzippedDir}/index.html`);
-    console.log(`unzipped to ${unzipResult}`);
+  }
 
-    unlink(zipFilePath);
+  function setProgressAndPrint(progress) {
+    console.log(progress);
+    setProgress(progress);
   }
 
   function showProgress() {
