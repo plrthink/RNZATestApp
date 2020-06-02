@@ -5,10 +5,9 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "haul start",
     "test": "jest",
-    "lint": "eslint .",
-    "haul": "haul start"
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "16.9.0",
