@@ -126,13 +126,13 @@ const App: () => React$Node = () => {
       const zipFilePath = await downloadArchive();
       unlink(unzippedDir);
 
-      const subscription = subscribeToZipArchive(function({
-        progress: unzipProgress,
-        filePath,
-      }) {
-        console.log(`unzipping to ${filePath}`);
-        setProgressAndPrint(unzipProgress);
-      });
+      // const subscription = subscribeToZipArchive(function({
+      //   progress: unzipProgress,
+      //   filePath,
+      // }) {
+      //   console.log(`unzipping to ${filePath}`);
+      //   setProgressAndPrint(unzipProgress);
+      // });
       const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
       if (isPasswordProtectedZip) {
         // TODO: prompt password dialog to user
@@ -141,7 +141,7 @@ const App: () => React$Node = () => {
       } else {
         await unzip(zipFilePath, DocumentDirectoryPath);
       }
-      subscription.remove();
+      // subscription.remove();
       showWebview();
       setWebviewUrl(`file://${unzippedDir}/index.html`);
       unlink(zipFilePath);
