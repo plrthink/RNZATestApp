@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -38,7 +30,7 @@ import {
   Colors,
 } from 'react-native-paper';
 
-const App: () => React$Node = () => {
+const App = () => {
   const [progress, setProgress] = useState(0);
   const [isShowingProgress, toggleProgress] = useState(false);
   const [isShowingWebview, toggleWebview] = useState(false);
@@ -46,9 +38,9 @@ const App: () => React$Node = () => {
     'https://github.com/mockingbot/react-native-zip-archive/',
   );
 
-  function getFilename(path) {
+  function getFilename(path: string) {
     const filenameWithExt = path.split('/').pop();
-    const filenameAsList = filenameWithExt.split('.');
+    const filenameAsList = filenameWithExt!.split('.');
     filenameAsList.pop();
     return filenameAsList.join('.');
   }
@@ -69,7 +61,7 @@ const App: () => React$Node = () => {
     const downloadPromise = downloadFile({
       fromUrl: remoteZipFileUrl,
       toFile: zipFilePath,
-      progress: function({contentLength, jobId, bytesWritten}) {
+      progress: function ({contentLength, jobId, bytesWritten}) {
         if (jobId === downloadPromise.jobId) {
           setProgressAndPrint(bytesWritten / contentLength);
         }
@@ -78,15 +70,19 @@ const App: () => React$Node = () => {
     const downloadResult = await downloadPromise.promise;
     if (downloadResult.statusCode !== 200) {
       hideProgress();
-      throw new Error(downloadResult.statusCode);
+      throw new Error(downloadResult.statusCode.toString());
     }
     return zipFilePath;
   }
 
   async function startArchiveTest() {
     const folder = `${DocumentDirectoryPath}/test`;
+    const file = `${DocumentDirectoryPath}/test.zip`;
     try {
       await unlink(folder);
+    } catch (error) {}
+    try {
+      await unlink(file);
     } catch (error) {}
     try {
       await mkdir(folder);
@@ -94,7 +90,7 @@ const App: () => React$Node = () => {
       await writeFile(`${folder}/test2.txt`, 'this is a test2', 'utf8');
       setProgressAndPrint(0);
       showProgress();
-      const subscription = subscribeToZipArchive(function({
+      const subscription = subscribeToZipArchive(function ({
         progress: zipProgress,
         filePath,
       }) {
@@ -102,14 +98,14 @@ const App: () => React$Node = () => {
         setProgressAndPrint(zipProgress);
       });
       await zipWithPassword(
-        folder,
+        [`${folder}/test1.txt`],
         `${DocumentDirectoryPath}/test.zip`,
         'password',
       );
       subscription.remove();
       setProgressAndPrint(1);
       hideProgress();
-      unlink(folder);
+      await unlink(folder);
       console.log(`zipped ${folder}`);
     } catch (error) {
       console.error(error);
@@ -123,16 +119,17 @@ const App: () => React$Node = () => {
     )}`;
 
     try {
-      const zipFilePath = await downloadArchive();
+      let zipFilePath = await downloadArchive();
+      zipFilePath = `file://${zipFilePath}`;
       unlink(unzippedDir);
 
-      // const subscription = subscribeToZipArchive(function({
-      //   progress: unzipProgress,
-      //   filePath,
-      // }) {
-      //   console.log(`unzipping to ${filePath}`);
-      //   setProgressAndPrint(unzipProgress);
-      // });
+      const subscription = subscribeToZipArchive(function ({
+        progress: unzipProgress,
+        filePath,
+      }) {
+        console.log(`unzipping to ${filePath}`);
+        setProgressAndPrint(unzipProgress);
+      });
       const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
       if (isPasswordProtectedZip) {
         // TODO: prompt password dialog to user
@@ -141,7 +138,7 @@ const App: () => React$Node = () => {
       } else {
         await unzip(zipFilePath, DocumentDirectoryPath);
       }
-      // subscription.remove();
+      subscription.remove();
       showWebview();
       setWebviewUrl(`file://${unzippedDir}/index.html`);
       unlink(zipFilePath);
@@ -153,8 +150,8 @@ const App: () => React$Node = () => {
     hideProgress();
   }
 
-  function setProgressAndPrint(progress) {
-    console.log(progress);
+  function setProgressAndPrint(progress: number) {
+    console.log(`progress: ${progress}`);
     setProgress(progress);
   }
 
@@ -217,7 +214,7 @@ const App: () => React$Node = () => {
                 originWhitelist={['http://*', 'https://*', 'file://*']}
                 startInLoadingState
                 allowFileAccess
-                onError={syntheticEvent => {
+                onError={(syntheticEvent) => {
                   const {nativeEvent} = syntheticEvent;
                   console.warn('WebView error: ', nativeEvent);
                 }}

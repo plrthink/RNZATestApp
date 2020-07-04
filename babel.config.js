@@ -4,5 +4,5 @@ module.exports = {
     production: {
       plugins: ['react-native-paper/babel'],
     },
-  }
+  },
 };
