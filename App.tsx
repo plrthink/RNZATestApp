@@ -30,6 +30,8 @@ import {
   Colors,
 } from 'react-native-paper';
 
+console.log(`working dri is ${DocumentDirectoryPath}`);
+
 const App = () => {
   const [progress, setProgress] = useState(0);
   const [isShowingProgress, toggleProgress] = useState(false);
@@ -56,7 +58,6 @@ const App = () => {
     try {
       await unlink(zipFilePath);
     } catch (error) {}
-    setProgressAndPrint(0);
     showProgress();
     const downloadPromise = downloadFile({
       fromUrl: remoteZipFileUrl,
@@ -69,7 +70,6 @@ const App = () => {
     });
     const downloadResult = await downloadPromise.promise;
     if (downloadResult.statusCode !== 200) {
-      hideProgress();
       throw new Error(downloadResult.statusCode.toString());
     }
     return zipFilePath;
@@ -78,6 +78,10 @@ const App = () => {
   async function startArchiveTest() {
     const folder = `${DocumentDirectoryPath}/test`;
     const file = `${DocumentDirectoryPath}/test.zip`;
+
+    setProgressAndPrint(0);
+    showProgress();
+
     try {
       await unlink(folder);
     } catch (error) {}
@@ -88,8 +92,6 @@ const App = () => {
       await mkdir(folder);
       await writeFile(`${folder}/test1.txt`, 'this is a test1', 'utf8');
       await writeFile(`${folder}/test2.txt`, 'this is a test2', 'utf8');
-      setProgressAndPrint(0);
-      showProgress();
       const subscription = subscribeToZipArchive(function ({
         progress: zipProgress,
         filePath,
@@ -114,14 +116,19 @@ const App = () => {
 
   async function startUnzipTest() {
     setProgressAndPrint(0);
+    showProgress();
+
     const unzippedDir = `${DocumentDirectoryPath}/${getFilename(
       remoteZipFileUrl,
     )}`;
 
     try {
+      await unlink(unzippedDir);
+    } catch (error) {}
+
+    try {
       let zipFilePath = await downloadArchive();
       zipFilePath = `file://${zipFilePath}`;
-      unlink(unzippedDir);
 
       const subscription = subscribeToZipArchive(function ({
         progress: unzipProgress,
@@ -141,9 +148,9 @@ const App = () => {
       subscription.remove();
       showWebview();
       setWebviewUrl(`file://${unzippedDir}/index.html`);
-      unlink(zipFilePath);
+      await unlink(zipFilePath);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
 
     setProgressAndPrint(1);
@@ -199,7 +206,6 @@ const App = () => {
           <Portal>
             <Modal
               visible={isShowingProgress}
-              onDismiss={hideProgress}
               contentContainerStyle={styles.modal}>
               <ProgressBar progress={progress} color={Colors.purple900} />
             </Modal>
