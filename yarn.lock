@@ -8187,10 +8187,10 @@ react-native-webview@^10.9.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native-zip-archive@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.npm.taobao.org/react-native-zip-archive/download/react-native-zip-archive-5.0.6.tgz#2d4f98e8d16df88638540db672e59a6d79fad0ca"
-  integrity sha1-LU+Y6NFt+IY4VA22cuWabXn60Mo=
+react-native-zip-archive@^5.0.7-beta.1:
+  version "5.0.7-beta.1"
+  resolved "https://registry.npmjs.org/react-native-zip-archive/-/react-native-zip-archive-5.0.7-beta.1.tgz#a4a17866f48983ec5f3c38697445db0a43819d13"
+  integrity sha512-+/H9FwdP3tdyRUYqowc/E5l7DtuZQn3rH2GWS0dn2pALqBmrA7YhqhU1u8wA9mVsmfY0YNqNgWoFGZ4g5T/wyQ==
 
 react-native@0.63.3:
   version "0.63.3"
