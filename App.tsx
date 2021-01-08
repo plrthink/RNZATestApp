@@ -48,7 +48,7 @@ const App = () => {
   }
 
   const remoteZipFileUrl =
-    'https://rnza-test-app-assets.firebaseapp.com/static_password.zip';
+    'https://rnza-test-app-assets.firebaseapp.com/offlineaadhaar20201229113401248.zip';
 
   async function downloadArchive() {
     const zipFilePath = `${DocumentDirectoryPath}/${remoteZipFileUrl
@@ -140,7 +140,7 @@ const App = () => {
       const isPasswordProtectedZip = await isPasswordProtected(zipFilePath);
       if (isPasswordProtectedZip) {
         // TODO: prompt password dialog to user
-        const password = 'helloworld';
+        const password = '4444';
         await unzipWithPassword(zipFilePath, DocumentDirectoryPath, password);
       } else {
         await unzip(zipFilePath, DocumentDirectoryPath);
