@@ -354,15 +354,15 @@ PODS:
     - React-perflogger (= 0.70.6)
   - RNFS (2.20.0):
     - React-Core
-  - RNZipArchive (6.0.9-dev.0):
+  - RNZipArchive (6.1.1):
     - React-Core
-    - RNZipArchive/Core (= 6.0.9-dev.0)
-    - SSZipArchive (~> 2.2)
-  - RNZipArchive/Core (6.0.9-dev.0):
+    - RNZipArchive/Core (= 6.1.1)
+    - SSZipArchive (~> 2.5.5)
+  - RNZipArchive/Core (6.1.1):
     - React-Core
-    - SSZipArchive (~> 2.2)
+    - SSZipArchive (~> 2.5.5)
   - SocketRocket (0.6.0)
-  - SSZipArchive (2.4.3)
+  - SSZipArchive (2.5.5)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -566,12 +566,12 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNZipArchive: f445574e7d7918826581a9fa9c7cf8afa86e588d
+  RNZipArchive: cbb60166d04b51ed163f954f84036b5c8966e660
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  SSZipArchive: c69881e8ac5521f0e622291387add5f60f30f3c4
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 02a3ee652f199bbaa557707e972fb3ca412b472b
+PODFILE CHECKSUM: cf43ce0bf0e43237c0bb47bb0b5e4faab260c865
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2

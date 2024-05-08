@@ -5760,10 +5760,10 @@ react-native-webview@^11.25.0:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native-zip-archive@6.0.9-dev.1:
-  version "6.0.9-dev.1"
-  resolved "https://registry.yarnpkg.com/react-native-zip-archive/-/react-native-zip-archive-6.0.9-dev.1.tgz#b07333c8f56d69c79a05b068b9508ba856c356c1"
-  integrity sha512-0erUyeQ3R1DQPFkoYy0yz3AGwlFe+H5CT4fXgvcKvvAF/hx/u52qJZWo63ykwZ7bfg80EgtcdgdSP6fEhJplKg==
+react-native-zip-archive@6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-zip-archive/-/react-native-zip-archive-6.1.1.tgz#91e51dc07820f2fc7299ec258076566c2d2ecdaa"
+  integrity sha512-CY1na9M8xMblF8Dq8xsxeexjdszCUyn9I0BPotK380GfMGkGwfWqEwt2403rqvUEnHoRnWtIVxtlKb72h1LB3w==
 
 react-native@0.70.6:
   version "0.70.6"
