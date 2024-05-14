@@ -16,7 +16,7 @@
     "react-native-paper": "5.0.0-rc.10",
     "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.25.0",
-    "react-native-zip-archive": "6.1.1"
+    "react-native-zip-archive": "6.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -5,6 +5,7 @@ platform :ios, '15.5'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'RNZATestApp' do
+  pod 'SSZipArchive', '~> 2.5.5'
   config = use_native_modules!
 
   # Flags change depending on the env values.

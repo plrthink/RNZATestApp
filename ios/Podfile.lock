@@ -354,13 +354,13 @@ PODS:
     - React-perflogger (= 0.70.6)
   - RNFS (2.20.0):
     - React-Core
-  - RNZipArchive (6.1.1):
+  - RNZipArchive (6.1.2):
     - React-Core
-    - RNZipArchive/Core (= 6.1.1)
-    - SSZipArchive (~> 2.5.5)
-  - RNZipArchive/Core (6.1.1):
+    - RNZipArchive/Core (= 6.1.2)
+    - SSZipArchive (~> 2.2)
+  - RNZipArchive/Core (6.1.2):
     - React-Core
-    - SSZipArchive (~> 2.5.5)
+    - SSZipArchive (~> 2.2)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.5.5)
   - Yoga (1.14.0)
@@ -426,6 +426,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNZipArchive (from `../node_modules/react-native-zip-archive`)
+  - SSZipArchive (~> 2.5.5)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -566,12 +567,12 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNZipArchive: cbb60166d04b51ed163f954f84036b5c8966e660
+  RNZipArchive: 6d736ee4e286dbbd9d81206b7a4da355596ca04a
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: c69881e8ac5521f0e622291387add5f60f30f3c4
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: cf43ce0bf0e43237c0bb47bb0b5e4faab260c865
+PODFILE CHECKSUM: 617af4437fe88cc439853b3063cb55e7b6eed983
 
 COCOAPODS: 1.15.2
