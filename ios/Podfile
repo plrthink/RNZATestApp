@@ -22,7 +22,8 @@ target 'RNZATestApp' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => FlipperConfiguration.enabled,
+    :flipper_configuration => FlipperConfiguration.enabled(["Debug"], { 'Flipper' => '0.250.0' }),
+
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
@@ -33,45 +34,10 @@ target 'RNZATestApp' do
   end
 
   post_install do |installer|
-    react_native_post_install(
-      installer,
-      # Set `mac_catalyst_enabled` to `true` in order to apply patches
-      # necessary for Mac Catalyst builds
-      :mac_catalyst_enabled => false
-    )
-    installer.pods_project.targets.each do |target|
-      if target.name == 'Flipper'
-        file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
-        contents = File.read(file_path)
-        unless contents.include?('#include <functional>')
-          File.chmod(0755, file_path)
-          File.open(file_path, 'w') do |file|
-            file.puts('#include <functional>')
-            file.puts(contents)
-          end
-        end
-      end
-    end
-
-    installer.pods_project.build_configurations.each do |config|
-      installer.pods_project.targets.each do |target|
-        if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
-          config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
-        end
-      end
-
-      # Set the preprocessing macro for the whole Pods project
-      existing_flags = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-      existing_flags << '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION'
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = existing_flags
-    end
-
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
       end
     end
-
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end
